@@ -203,7 +203,7 @@ print("p'sw = {:3.4f}".format(number['no_cme']['above']/number['no_cme']['all'])
 print("p'cme = {:3.4f}".format(number['cme']['above']/number['cme']['all']))
 
 # Paper has Ncme=17744, Ncme'=1149, Nsw=216787, Nsw'=1112
-
+# <codecell> Perform cost/loss analysis
 dcost = 1.0 / n_cl_bins
 costs = np.arange(dcost, 1.0, dcost)
 # DataFrame to store all cost calculations
@@ -281,10 +281,10 @@ for key in ['cmes', 'v', 'b', 'vb']:
 
 # <codecell> plot the cost-loss summary    
 fig, ax = plt.subplots()
-ax.fill_between(costloss['cost'], 0, costloss['cmes_relative'], color=[0.7, 0.7, 0.7], label='ICME Arrival time only')
-ax.plot(costloss['cost'], costloss['v_relative'], 'b-', label='+ ICME V')
-ax.plot(costloss['cost'], costloss['b_relative'], 'r-', label='+ ICME B')
-ax.plot(costloss['cost'], costloss['vb_relative'], 'k-', label='+ ICME V & B')
+ax.fill_between(costloss['cost'], 0, costloss['cmes_relative'], color=[0.7, 0.7, 0.7], label='CME Arrival time only')
+ax.plot(costloss['cost'], costloss['v_relative'], 'b-', label='+ CME V')
+ax.plot(costloss['cost'], costloss['b_relative'], 'r-', label='+ CME B')
+ax.plot(costloss['cost'], costloss['vb_relative'], 'k-', label='+ CME V & B')
 
 ax.set_xscale('log')
 ax.set_ylim(0, 70)
@@ -297,7 +297,7 @@ legendorder = [3,0,1,2]
 plt.legend([handles[idx] for idx in legendorder],[labels[idx] for idx in legendorder])
 
 ax.grid(b=True, which='both', axis='both')
-ax.set_ylabel('Forecast value (%)')
+ax.set_ylabel('V: Forecast value (%)')
 ax.set_xlabel('C/L: Relative cost of taking mitigating action')
 
 ax.annotate('', xy=(0.85, 1.1), xycoords='axes fraction', xytext=(1, 1.1), 
