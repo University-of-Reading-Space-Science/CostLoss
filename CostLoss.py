@@ -18,8 +18,8 @@ plt.rc('font', **font)
 # <codecell> User-defined parameters
 quantile_thresh = 0.995  # the percentile to consider [0.99]
 time_res='1H'           #the time resoltuion at which to perfrom the analysis ['1H']
-n_categories = 10       # number of categories for V, B [10]. 4 = quartiles, etc
-
+n_categories = 4        # number of categories for V, B [10]. 4 = quartiles, etc
+n_cl_bins = 100         # number of cost/loss bins for plotting  [100]
 
 # <codecell> Load and process data
 def load_omni(): 
@@ -90,7 +90,7 @@ plt.ylabel('Geoeffectiveness')
 
 # Compute the quantiles of the CME speed distribution
 n_bins = 10000  # number of bins for CDF [10000]
-n_cl_bins = 100         # number of cost/loss bins
+
 
 # Define G bins for computing CDFs
 g_min = omni['g'].min()
@@ -204,8 +204,9 @@ print("p'cme = {:3.4f}".format(number['cme']['above']/number['cme']['all']))
 
 # Paper has Ncme=17744, Ncme'=1149, Nsw=216787, Nsw'=1112
 # <codecell> Perform cost/loss analysis
-dcost = 1.0 / n_cl_bins
-costs = np.arange(dcost, 1.0, dcost)
+#dcost = 1.0 / n_cl_bins
+#costs = np.arange(dcost, 1.0, dcost)
+costs = np.geomspace(0.001, 1, num=n_cl_bins)
 # DataFrame to store all cost calculations
 costloss = pd.DataFrame({'cost':costs, 'perfect': 0, 'climatology': 0, 'cmes': 0, 'v': 0, 'b': 0, 'vb': 0})
 loss = 1.0
@@ -290,7 +291,7 @@ ax.set_xscale('log')
 ax.set_ylim(0, 70)
 ax.set_xticks((0.001,0.01,0.1,1))
 ax.set_xticklabels(('0.001','0.01','0.1','1'))
-ax.set_xlim(0.01, 1.0)
+ax.set_xlim(0.001, 1.0)
 #legend
 handles, labels = plt.gca().get_legend_handles_labels()
 legendorder = [3,0,1,2]
