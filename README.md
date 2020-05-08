@@ -5,7 +5,7 @@
 This repository provides an implementation of the Cost/Loss analysis in Python, as described by [Owens et al. (2020)](DOI).
 
 ## Installation
-The ``Cost/Loss`` analysis is written in Python 3.7.3 and requires ``numpy``, ``matplotlib``, ``pandas`` and ``astropy``. All required data are included.
+The ``Cost/Loss`` analysis is written in Python 3.7.3 and requires ``numpy``, ``matplotlib``, ``pandas`` and ``astropy``. For convenience, all required data are included. OMNI data are available from https://omniweb.gsfc81.nasa.gov/. The updated near-Earth CME list is available from http://www.srl.caltech.edu/ACE/ASC/DATA/level3/icmetable2.htm.
 
 The simplest way to work with ``CostLoss`` in ``conda`` is to create its own environment. With the anaconda prompt, in the root directory of ``CostLoss``, this can be done as:
 ```
