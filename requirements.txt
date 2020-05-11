@@ -1,0 +1,4 @@
+astropy==4.0
+matplotlib==3.2.1
+numpy==1.18.1
+pandas==0.25.1

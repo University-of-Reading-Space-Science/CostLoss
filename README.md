@@ -14,7 +14,7 @@ The simplest way to work with ``CostLoss`` in ``conda`` is to create its own env
 ``` 
 Then the examples can be accessed through 
 ```
->>jupyter lab code/CostLoss.ipynb
+>>jupyter lab CostLoss.ipynb
 ```
 ## Contact
 Please contact either [Mathew Owens](https://github.com/mathewjowens) or [Luke Barnard](https://github.com/lukebarnard). 
