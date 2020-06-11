@@ -20,5 +20,4 @@ Then the examples can be accessed through
 Please contact either [Mathew Owens](https://github.com/mathewjowens) or [Luke Barnard](https://github.com/lukebarnard). 
 
 ## Citation
-Please cite this software as Owens et al. (2020),  DOI:10.1029/2020SW002507
-
+Please cite this software as Owens, M. J., Lockwood, M., & Barnard, L. A. ( 2020). The value of CME arrival‐time forecasts for space weather mitigation. Space Weather, 18, e2020SW002507. https://doi.org/10.1029/2020SW002507
