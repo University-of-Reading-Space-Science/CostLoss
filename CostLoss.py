@@ -139,9 +139,9 @@ b_quantiles = icme['b'].quantile(quantiles)
 
 # Find the indices of SW parameters for the different v and b quantiles and sw classifications (cme, no cme)
 groups = {}
-groups['all'] = np.argwhere(np.isfinite(omni['g'])).squeeze()
-groups['no_cme'] = np.argwhere(omni['region'] == 0).squeeze()
-groups['cme'] = np.argwhere(omni['region'] > 0).squeeze()
+groups['all'] = np.nonzero(np.isfinite(omni['g']))[0]
+groups['no_cme'] = np.nonzero(omni['region'] == 0)[0]
+groups['cme'] = np.nonzero(omni['region'] > 0)[0]
 
 for i in range(v_quantiles.size + 1):
     
@@ -149,24 +149,24 @@ for i in range(v_quantiles.size + 1):
     b_key = "b_{:02d}".format(i)
     if i == 0:
         id_group = omni['cme_v'] <= v_quantiles.values[i] # do nans need to be exlucded here?
-        groups[v_key] = np.argwhere(id_group).squeeze()
+        groups[v_key] = np.nonzero(id_group)[0]
         
         id_group = omni['cme_b'] <= b_quantiles.values[i]
-        groups[b_key] = np.argwhere(id_group).squeeze()
+        groups[b_key] = np.nonzero(id_group)[0]
         
     elif (i > 0) & (i < v_quantiles.size):
         id_group = (omni['cme_v'] > v_quantiles.values[i-1]) & (omni['cme_v'] <= v_quantiles.values[i])
-        groups[v_key] = np.argwhere(id_group).squeeze()
+        groups[v_key] = np.nonzero(id_group)[0]
         
         id_group = (omni['cme_b'] > b_quantiles.values[i-1]) & (omni['cme_b'] <= b_quantiles.values[i])
-        groups[b_key] = np.argwhere(id_group).squeeze()
+        groups[b_key] = np.nonzero(id_group)[0]
     
     elif i == v_quantiles.size:
         id_group = omni['cme_v'] > v_quantiles.values[i-1]
-        groups[v_key] = np.argwhere(id_group).squeeze()
+        groups[v_key] = np.nonzero(id_group)[0]
         
         id_group = omni['cme_b'] > b_quantiles.values[i-1]
-        groups[b_key] = np.argwhere(id_group).squeeze()
+        groups[b_key] = np.nonzero(id_group)[0]
         
 # Now the combined V and B groups
 for i in range(v_quantiles.size + 1):
@@ -184,7 +184,7 @@ prob = {}
 number = {}
 
 # Find g_bin closest to threshold from below.
-pos = np.argwhere(g_bin_centres <= g_thresh).squeeze() # should this be <=?
+pos = np.nonzero(g_bin_centres <= g_thresh)[0] # should this be <=?
 id_exceed = pos[-1]
 for key, index in groups.items():
     
