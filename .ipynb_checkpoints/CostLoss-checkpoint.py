@@ -15,6 +15,8 @@ font = {'family' : 'normal',
         'size'   : 14}
 plt.rc('font', **font)
 
+pd.plotting.register_matplotlib_converters()
+
 # <codecell> User-defined parameters
 quantile_thresh = 0.995  # the percentile to consider [0.99]
 time_res='1H'           #the time resoltuion at which to perfrom the analysis ['1H']
@@ -137,37 +139,40 @@ quantiles = np.arange(1, n_categories, 1) / n_categories
 v_quantiles = icme['v'].quantile(quantiles)
 b_quantiles = icme['b'].quantile(quantiles)
 
+print('V quantile boundaries are: ',v_quantiles)
+print('B quantile boundaries are: ',b_quantiles)
+
 # Find the indices of SW parameters for the different v and b quantiles and sw classifications (cme, no cme)
 groups = {}
-groups['all'] = np.nonzero(np.isfinite(omni['g']))[0]
-groups['no_cme'] = np.nonzero(omni['region'] == 0)[0]
-groups['cme'] = np.nonzero(omni['region'] > 0)[0]
+groups['all'] = np.nonzero(omni['g'].to_numpy())[0]
+groups['no_cme'] = np.nonzero(omni['region'].to_numpy() == 0)[0]
+groups['cme'] = np.nonzero(omni['region'].to_numpy() > 0)[0]
 
 for i in range(v_quantiles.size + 1):
     
     v_key = "v_{:02d}".format(i)
     b_key = "b_{:02d}".format(i)
     if i == 0:
-        id_group = omni['cme_v'] <= v_quantiles.values[i] # do nans need to be exlucded here?
+        id_group = omni['cme_v'].to_numpy() <= v_quantiles.values[i] # do nans need to be exlucded here?
         groups[v_key] = np.nonzero(id_group)[0]
         
-        id_group = omni['cme_b'] <= b_quantiles.values[i]
+        id_group = omni['cme_b'].to_numpy() <= b_quantiles.values[i]
         groups[b_key] = np.nonzero(id_group)[0]
         
     elif (i > 0) & (i < v_quantiles.size):
-        id_group = (omni['cme_v'] > v_quantiles.values[i-1]) & (omni['cme_v'] <= v_quantiles.values[i])
+        id_group = (omni['cme_v'].to_numpy() > v_quantiles.values[i-1]) & (omni['cme_v'].to_numpy() <= v_quantiles.values[i])
         groups[v_key] = np.nonzero(id_group)[0]
         
-        id_group = (omni['cme_b'] > b_quantiles.values[i-1]) & (omni['cme_b'] <= b_quantiles.values[i])
+        id_group = (omni['cme_b'].to_numpy() > b_quantiles.values[i-1]) & (omni['cme_b'].to_numpy() <= b_quantiles.values[i])
         groups[b_key] = np.nonzero(id_group)[0]
     
     elif i == v_quantiles.size:
-        id_group = omni['cme_v'] > v_quantiles.values[i-1]
+        id_group = omni['cme_v'].to_numpy() > v_quantiles.values[i-1]
         groups[v_key] = np.nonzero(id_group)[0]
         
-        id_group = omni['cme_b'] > b_quantiles.values[i-1]
+        id_group = omni['cme_b'].to_numpy() > b_quantiles.values[i-1]
         groups[b_key] = np.nonzero(id_group)[0]
-        
+           
 # Now the combined V and B groups
 for i in range(v_quantiles.size + 1):
     v_key = "v_{:02d}".format(i)
@@ -177,7 +182,7 @@ for i in range(v_quantiles.size + 1):
         vb_key = v_key + '_' + b_key
         # Also get the intersection of the matched quantiles for the combined v-b category
         groups[vb_key] = np.intersect1d(groups[v_key], groups[b_key])
-
+        
 # <codecell> Compute probabilities       
 # Compute the exceedance probability and numbers above and below threshold for each grouping of the data.
 prob = {}
